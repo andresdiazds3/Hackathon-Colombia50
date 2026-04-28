@@ -11,8 +11,11 @@ from app.services.aiService import AIService
 from app.tools.orders import generate_work_order, get_work_order, get_all_work_orders, WorkOrderRequest
 from app.tools.agent_tools import (
     get_network_summary,
+    get_access_points_overview,
     get_anomalous_access_points,
-    get_strategic_recommendations
+    get_top_incident_access_points,
+    get_strategic_recommendations,
+    classify_failure_type
 )
 
 load_dotenv()
@@ -42,18 +45,35 @@ class ChatRequest(BaseModel):
 @app.get("/api/dashboard/summary")
 def get_dashboard_summary_route():
     """
-    Devuelve conteos globales de estado y lista resumida de APs.
-    TODO: Persona 1 debe integrar su lógica real. Por ahora usa los mocks de agent_tools.
+    Devuelve conteos globales de estado y lista resumida de APs (datos reales de CSV).
     """
-    return get_network_summary()
+    summary = get_network_summary()
+    overview = get_access_points_overview()
+    return {
+        "summary": summary,
+        "access_points": overview.get("access_points", [])
+    }
 
 @app.get("/api/anomalies")
 def get_anomalies_route():
     """
     Devuelve APs con disconnection_rate > 1.3.
-    TODO: Persona 1 debe integrar su lógica real. Por ahora usa los mocks de agent_tools.
     """
     return get_anomalous_access_points()
+
+@app.get("/api/top-incidents")
+def get_top_incidents_route(limit: int = 5, region: Optional[str] = None):
+    """
+    Devuelve los APs con mayor cantidad de incidentes.
+    """
+    return get_top_incident_access_points(limit, region)
+
+@app.get("/api/access-points/{ap_name}/classification")
+def get_ap_classification_route(ap_name: str):
+    """
+    Clasifica el tipo de falla de un AP específico.
+    """
+    return classify_failure_type(ap_name)
 
 @app.post("/api/work-orders")
 def create_work_order_route(req: WorkOrderRequest):

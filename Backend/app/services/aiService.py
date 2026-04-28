@@ -4,9 +4,11 @@ from openai import OpenAI
 
 from app.tools.agent_tools import (
     get_network_summary,
+    get_access_points_overview,
     get_anomalous_access_points,
     get_top_incident_access_points,
-    get_strategic_recommendations
+    get_strategic_recommendations,
+    classify_failure_type
 )
 from app.tools.orders import generate_work_order
 
@@ -16,11 +18,11 @@ class AIService:
             base_url="https://openrouter.ai/api/v1",
             api_key=api_key,
         )
-        # Lista de modelos gratuitos como fallback (si uno falla por Rate Limit, intenta el siguiente)
+        # Lista de modelos gratuitos como fallback
         self.free_models = [
-            "google/gemini-2.5-flash:free",
-            "meta-llama/llama-3-8b-instruct:free",
-            "mistralai/mistral-7b-instruct:free",
+            "google/gemini-2.0-flash-lite-preview-02-05:free",
+            "meta-llama/llama-3.1-8b-instruct:free",
+            "mistralai/mistral-nemo:free",
             "openrouter/auto"
         ]
 
@@ -61,6 +63,13 @@ class AIService:
                                 "region": {"type": "string", "description": "Región específica (ej. 'Montebello')"}
                             }
                         }
+                    }
+                },
+                {
+                    "type": "function",
+                    "function": {
+                        "name": "get_access_points_overview",
+                        "description": "Devuelve la lista completa de todos los Access Points, su distribución y estado actual."
                     }
                 },
                 {
@@ -107,6 +116,20 @@ class AIService:
                 {
                     "type": "function",
                     "function": {
+                        "name": "classify_failure_type",
+                        "description": "Clasifica el tipo de falla de un AP basándose en sus eventos de red y métricas horarias (intermitente, total, degradada).",
+                        "parameters": {
+                            "type": "object",
+                            "properties": {
+                                "ap_name": {"type": "string", "description": "Nombre del Access Point a analizar"}
+                            },
+                            "required": ["ap_name"]
+                        }
+                    }
+                },
+                {
+                    "type": "function",
+                    "function": {
                         "name": "generate_work_order",
                         "description": "Genera una orden de trabajo para arreglar un AP.",
                         "parameters": {
@@ -134,10 +157,15 @@ class AIService:
 
             # 1. Primera llamada con fallback
             response = self._call_with_fallback(messages, tools)
+            
+            # Verificación de seguridad por si OpenRouter devuelve un formato inesperado
+            if not getattr(response, "choices", None):
+                raise ValueError(f"El modelo no devolvió una respuesta válida (choices es nulo).")
+                
             message = response.choices[0].message
-
+            
             # 2. Verificar llamadas a herramientas
-            if message.tool_calls:
+            if hasattr(message, "tool_calls") and message.tool_calls:
                 messages.append(cast(Any, message.model_dump(exclude_none=True)))
 
                 for tool_call in message.tool_calls:
@@ -151,12 +179,16 @@ class AIService:
                     # Mapeo a Python tools
                     if func_name == "get_network_summary":
                         resultado = get_network_summary(args.get("region"))
+                    elif func_name == "get_access_points_overview":
+                        resultado = get_access_points_overview()
                     elif func_name == "get_anomalous_access_points":
                         resultado = get_anomalous_access_points(args.get("threshold", 1.3), args.get("region"))
                     elif func_name == "get_top_incident_access_points":
                         resultado = get_top_incident_access_points(args.get("limit", 5), args.get("region"))
                     elif func_name == "get_strategic_recommendations":
                         resultado = get_strategic_recommendations(args.get("region"))
+                    elif func_name == "classify_failure_type":
+                        resultado = classify_failure_type(args.get("ap_name"))
                     elif func_name == "generate_work_order":
                         resultado = generate_work_order(
                             ap_name=args.get("ap_name", "Desconocido"),
