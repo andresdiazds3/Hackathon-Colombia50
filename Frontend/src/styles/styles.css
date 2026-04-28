@@ -1,0 +1,14 @@
+body { background:#0b0b0b; color:white; font-family:sans-serif; }
+
+.topbar { display:flex; justify-content:space-between; padding:10px; background:#111; }
+
+.panel { background:#111; padding:10px; border-radius:10px; margin:10px 0; }
+
+.charts-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+.legend { margin-top:10px; }
+
+.msg.user { text-align:right; }
+.msg.ai { text-align:left; }
