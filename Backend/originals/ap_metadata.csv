@@ -1,0 +1,24 @@
+ap_name,zona,tipo_zona,lat,lon,municipio,descripcion
+057_La Castilla-AP1,La Castilla,urbana,3.4516,-76.5021,Cali,Barrio urbano del oriente de Cali
+057_La Castilla-AP2,La Castilla,urbana,3.4516,-76.5021,Cali,Barrio urbano del oriente de Cali
+058_La Elvira-AP1,La Elvira,rural,3.4800,-76.5950,Cali,Corregimiento rural zona occidental
+058_La Elvira-AP2,La Elvira,rural,3.4800,-76.5950,Cali,Corregimiento rural zona occidental
+059_El Saladito-AP1,El Saladito,rural,3.4650,-76.6100,Cali,Corregimiento rural de ladera
+060_Felidia-AP1,Felidia,rural,3.5020,-76.6200,Cali,Corregimiento rural zona montañosa
+060_Felidia-AP2,Felidia,rural,3.5020,-76.6200,Cali,Corregimiento rural zona montañosa
+061_La Leonera-AP1,La Leonera,rural,3.4550,-76.6050,Cali,Corregimiento rural de alta montaña
+061_La Leonera-AP2,La Leonera,rural,3.4550,-76.6050,Cali,Corregimiento rural de alta montaña
+062_Pichinde-AP1,Pichindé,rural,3.4750,-76.6300,Cali,Corregimiento rural zona occidental
+062_Pichinde-AP2,Pichindé,rural,3.4750,-76.6300,Cali,Corregimiento rural zona occidental
+063_Los Andes-AP1,Los Andes,rural,3.5100,-76.6400,Cali,Corregimiento rural zona norte-occidental
+063_Los Andes-AP2,Los Andes,rural,3.5100,-76.6400,Cali,Corregimiento rural zona norte-occidental
+063_Los Andes-AP3,Los Andes,rural,3.5100,-76.6400,Cali,Corregimiento rural zona norte-occidental
+066_Pance-AP1,Pance,periurbana,3.3800,-76.5700,Cali,Corregimiento periurbano al sur de Cali
+067_Montebello-AP1,Montebello,rural,3.5300,-76.6100,Cali,Corregimiento rural zona norte
+068_Golondrinas-AP1,Golondrinas,rural,3.5500,-76.6300,Cali,Corregimiento rural zona norte-occidental
+069_La Paz-AP1,La Paz,rural,3.5200,-76.6500,Cali,Corregimiento rural zona norte
+070_La Buitrera-AP1,La Buitrera,rural,3.4200,-76.5800,Cali,Corregimiento rural zona sur-occidental
+071_Villacarmelo-AP1,Villacarmelo,rural,3.5400,-76.6600,Cali,Corregimiento rural zona norte-occidental
+072_Hormiguero_AP1,Hormiguero,periurbana,3.3450,-76.5180,Hormiguero,Municipio del Valle del Cauca cercano a Cali
+073_Navarro-AP1,Navarro,periurbana,3.4050,-76.4900,Cali,Zona periurbana suroriente de Cali
+079_ZW La Voragine-AP1,La Vorágine,urbana,3.4700,-76.5200,Cali,Zona urbana de Cali
